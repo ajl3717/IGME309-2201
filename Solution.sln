@@ -111,6 +111,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A05 - Octree", "A05 - Octre
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06.5 - LERP", "E06.5 - LERP\E06.5 - LERP.vcxproj", "{822E40D2-80A1-46EB-AD93-EC28C4F145ED}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00_Minimal", "00_Minimal\00_Minimal.vcxproj", "{5C1B794A-43EE-4389-A011-1731BFA1F097}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "12_MeshClass", "12_MeshClass\12_MeshClass.vcxproj", "{7BE826FE-1276-443A-A797-E5DF6B503D36}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "C09.5_MyMeshStart", "C09.5_MyMeshStart\C09.5_MyMeshStart.vcxproj", "{5AC439E4-1E5A-435C-9C22-5A6F367792E9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E05", "E05\E05.vcxproj", "{12DDD7DB-76B1-445A-8BDA-1620E91A410F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -315,6 +323,22 @@ Global
 		{822E40D2-80A1-46EB-AD93-EC28C4F145ED}.Debug|x86.Build.0 = Debug|Win32
 		{822E40D2-80A1-46EB-AD93-EC28C4F145ED}.Release|x86.ActiveCfg = Release|Win32
 		{822E40D2-80A1-46EB-AD93-EC28C4F145ED}.Release|x86.Build.0 = Release|Win32
+		{5C1B794A-43EE-4389-A011-1731BFA1F097}.Debug|x86.ActiveCfg = Debug|Win32
+		{5C1B794A-43EE-4389-A011-1731BFA1F097}.Debug|x86.Build.0 = Debug|Win32
+		{5C1B794A-43EE-4389-A011-1731BFA1F097}.Release|x86.ActiveCfg = Release|Win32
+		{5C1B794A-43EE-4389-A011-1731BFA1F097}.Release|x86.Build.0 = Release|Win32
+		{7BE826FE-1276-443A-A797-E5DF6B503D36}.Debug|x86.ActiveCfg = Debug|Win32
+		{7BE826FE-1276-443A-A797-E5DF6B503D36}.Debug|x86.Build.0 = Debug|Win32
+		{7BE826FE-1276-443A-A797-E5DF6B503D36}.Release|x86.ActiveCfg = Release|Win32
+		{7BE826FE-1276-443A-A797-E5DF6B503D36}.Release|x86.Build.0 = Release|Win32
+		{5AC439E4-1E5A-435C-9C22-5A6F367792E9}.Debug|x86.ActiveCfg = Debug|Win32
+		{5AC439E4-1E5A-435C-9C22-5A6F367792E9}.Debug|x86.Build.0 = Debug|Win32
+		{5AC439E4-1E5A-435C-9C22-5A6F367792E9}.Release|x86.ActiveCfg = Release|Win32
+		{5AC439E4-1E5A-435C-9C22-5A6F367792E9}.Release|x86.Build.0 = Release|Win32
+		{12DDD7DB-76B1-445A-8BDA-1620E91A410F}.Debug|x86.ActiveCfg = Debug|Win32
+		{12DDD7DB-76B1-445A-8BDA-1620E91A410F}.Debug|x86.Build.0 = Debug|Win32
+		{12DDD7DB-76B1-445A-8BDA-1620E91A410F}.Release|x86.ActiveCfg = Release|Win32
+		{12DDD7DB-76B1-445A-8BDA-1620E91A410F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

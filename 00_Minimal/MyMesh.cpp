@@ -1,51 +1,4 @@
 #include "MyMesh.h"
-void MyMesh::GenerateCircle(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color)
-{
-	Release();
-	Init();
-
-	if (a_fRadius < 0.01f)
-		a_fRadius = 0.01f;
-
-	if (a_nSubdivisions < 3)
-		a_nSubdivisions = 3;
-	if (a_nSubdivisions > 360)
-		a_nSubdivisions = 360;
-
-
-	//Anthony Lamar's code
-	//holds all the vertices
-	std::vector<vector3> vertices;
-	//placeholder for trig stuff
-	GLfloat theta = 0;
-	//calculates the angle of the divisions
-	GLfloat incrementer = 2 * PI / a_nSubdivisions;
-
-	//loop to create all the vertices
-	for (int i = 0; i < a_nSubdivisions; i++)
-	{
-		//temporarly stores the point
-		vector3 point = vector3(cos(theta) * a_fRadius, sin(theta) * a_fRadius, 0.0f);
-		//increments the angle so it moves around the circle
-		theta += incrementer;
-		//adds to vector of vertices
-		vertices.push_back(point); 
-	}
-
-	//loop to create the triangles
-	for (int i = 0; i < a_nSubdivisions; i++)
-	{
-		
-		AddTri(	vector3(0.0f, 0.0f, 0.0f),				//centered at point 0,0,0
-				vertices[i],							//grabs the point from the array
-				vertices[(i + 1) % a_nSubdivisions]);	//grabs the point the next point in the vector (uses % a_nSubdivisions, so when it gets to the last point, it ties it back to the first one)
-	}
-
-
-	// Adding information about color
-	CompleteMesh(a_v3Color);
-	CompileOpenGL3X();
-}
 void MyMesh::Init(void)
 {
 	m_bBinded = false;
@@ -306,7 +259,6 @@ void MyMesh::GenerateCuboid(vector3 a_v3Dimensions, vector3 a_v3Color)
 	CompleteMesh(a_v3Color);
 	CompileOpenGL3X();
 }
-
 void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color)
 {
 	if (a_fRadius < 0.01f)
