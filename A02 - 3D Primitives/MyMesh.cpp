@@ -275,8 +275,38 @@ void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions,
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	// -------------------------------
+	//holds all the vertices
+	std::vector<vector3> vertices;
+	//placeholder for trig stuff
+	GLfloat theta = 0;
+	//calculates the angle of the divisions
+	GLfloat incrementer = 2 * PI / a_nSubdivisions;
+
+	//loop to create all the vertices
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//temporarly stores the point
+		vector3 point = vector3(cos(theta) * a_fRadius, sin(theta) * a_fRadius, a_fHeight);
+		//increments the angle so it moves around the circle
+		theta += incrementer;
+		//adds to vector of vertices
+		vertices.push_back(point);
+	}
+
+	//loop to create the sides
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+
+		AddTri(vector3(0.0f, 0.0f, a_fHeight),				//centered at point 0,0,0
+			vertices[i],							//grabs the point from the array
+			vertices[(i + 1) % a_nSubdivisions]);	//grabs the point the next point in the vector (uses % a_nSubdivisions, so when it gets to the last point, it ties it back to the first one)
+
+		//creates circle on opposite end
+		AddTri(vertices[(i + 1) % a_nSubdivisions],
+			vertices[i],
+			vector3(0.0f, 0.0f, 0.0f));
+	}
 	// -------------------------------
 
 	// Adding information about color
@@ -299,8 +329,58 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	// -------------------------------
+	//holds all the vertices
+	std::vector<vector3> verticesBottom;
+	std::vector<vector3> verticesTop;
+	//placeholder for trig stuff
+	GLfloat theta = 0;
+	//calculates the angle of the divisions
+	GLfloat incrementer = 2 * PI / a_nSubdivisions;
+
+	//loop to create all the vertices for bottom
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//temporarly stores the point
+		vector3 point = vector3(cos(theta) * a_fRadius, sin(theta) * a_fRadius, 0.0f);
+		//increments the angle so it moves around the circle
+		theta += incrementer;
+		//adds to vector of vertices
+		verticesBottom.push_back(point);
+	}
+
+	//resets theta
+	theta = 0;
+	//creates all vertices for top
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//temporarly stores the point
+		vector3 point = vector3(cos(theta) * a_fRadius, sin(theta) * a_fRadius, a_fHeight);
+		//increments the angle so it moves around the circle
+		theta += incrementer;
+		//adds to vector of vertices
+		verticesTop.push_back(point);
+	}
+
+	//loop to create the sides
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//creates top circle
+		AddTri(vector3(0.0f, 0.0f, 0.0f),
+			verticesBottom[(i + 1) % a_nSubdivisions],
+			verticesBottom[i]);
+
+		//creates sides of cylinder
+		AddQuad(verticesBottom[i],
+			verticesBottom[(i + 1) % a_nSubdivisions],
+			verticesTop[i],
+			verticesTop[(i + 1) % a_nSubdivisions]);
+
+		//creates top circle
+		AddTri(verticesTop[i],
+			verticesTop[(i + 1) % a_nSubdivisions],
+			vector3(0.0f, 0.0f, a_fHeight));
+	}
 	// -------------------------------
 
 	// Adding information about color
@@ -330,7 +410,72 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	//holds all the vertices
+	std::vector<vector3> verticesBottomInner;
+	std::vector<vector3> verticesTopInner;
+	std::vector<vector3> verticesBottomOuter;
+	std::vector<vector3> verticesTopOuter;
+	//placeholder for trig stuff
+	GLfloat theta = 0;
+	//calculates the angle of the divisions
+	GLfloat incrementer = 2 * PI / a_nSubdivisions;
+
+	//loop to create all the vertices for bottom
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//temporarly stores the point
+		vector3 innerPoint = vector3(cos(theta) * a_fInnerRadius, sin(theta) * a_fInnerRadius, 0.0f);
+		vector3 outerPoint = vector3(cos(theta) * a_fOuterRadius, sin(theta) * a_fOuterRadius, 0.0f);
+		//increments the angle so it moves around the circle
+		theta += incrementer;
+		//adds to vector of vertices
+		verticesBottomInner.push_back(innerPoint);
+		verticesBottomOuter.push_back(outerPoint);
+	}
+
+	//resets theta
+	theta = 0;
+	//creates all vertices for top
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//temporarly stores the point
+		vector3 innerPoint = vector3(cos(theta) * a_fInnerRadius, sin(theta) * a_fInnerRadius, a_fHeight);
+		vector3 outerPoint = vector3(cos(theta) * a_fOuterRadius, sin(theta) * a_fOuterRadius, a_fHeight);
+		//increments the angle so it moves around the circle
+		theta += incrementer;
+		//adds to vector of vertices
+		verticesTopInner.push_back(innerPoint);
+		verticesTopOuter.push_back(outerPoint);
+	}
+
+	//loop to create the Sides
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+
+		//creates bottom
+		AddQuad(verticesBottomOuter[(i + 1) % a_nSubdivisions],
+			verticesBottomOuter[i],
+			verticesBottomInner[(i + 1) % a_nSubdivisions],
+			verticesBottomInner[i]);
+
+		//creates inside sides
+		AddQuad(verticesTopInner[i],
+			verticesTopInner[(i + 1) % a_nSubdivisions],
+			verticesBottomInner[i],
+			verticesBottomInner[(i + 1) % a_nSubdivisions]);
+		
+		//creates outside sides
+		AddQuad(verticesBottomOuter[i],
+			verticesBottomOuter[(i + 1) % a_nSubdivisions],
+			verticesTopOuter[i],
+			verticesTopOuter[(i + 1) % a_nSubdivisions]);
+
+		//creates top
+		AddQuad(verticesTopOuter[i],
+			verticesTopOuter[(i + 1) % a_nSubdivisions],
+			verticesTopInner[i],
+			verticesTopInner[(i + 1) % a_nSubdivisions]);
+	}
 	// -------------------------------
 
 	// Adding information about color
@@ -361,8 +506,56 @@ void MyMesh::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSu
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	// -------------------------------
+	//I believe this shape isn't working because my math equation has some mistakes in plugging in. Some of the parts produce the desired effect, but some sections are too flat
+
+	//holds all the vertices
+	std::vector<std::vector<vector3>> vertexSubdivions;
+
+	//creates all the needed vectors
+	for (int i = 0; i < a_nSubdivisionsB; i++)
+	{
+		std::vector<vector3> placeholder;
+		vertexSubdivions.push_back(placeholder);
+	}
+	//placeholder for trig stuff
+	GLfloat thetaA = 0; //for the "circle" in the tube
+	GLfloat thetaB = 0; //for the angle of the disc pieces
+	//calculates the angle of the divisions
+	GLfloat incrementerA = 2 * PI / a_nSubdivisionsA; //for the "circle" in the tube
+	GLfloat incrementerB = 2 * PI / a_nSubdivisionsB; //for the angle of the disc pieces
+
+	//keeps track of radius of tube
+	GLfloat tubeRadius = (a_fOuterRadius - a_fInnerRadius) / 2;
+
+	//loops between the different "circles"
+	for (int i = 0; i < a_nSubdivisionsB; i++)
+	{
+		//loops around the points of a "circle"
+		for (int j = 0; j < a_nSubdivisionsA; j++)
+		{
+			//parametric equations to get the points
+			vector3 point = vector3(((a_fInnerRadius + tubeRadius) + tubeRadius * cos(thetaB)) * cos(thetaA), ((a_fInnerRadius + tubeRadius) + tubeRadius * sin(thetaB)) * sin(thetaA), tubeRadius * sin(thetaB));
+			//increments the angle of the "circle"
+			thetaA += incrementerA;
+			//add to the circle they belong to
+			vertexSubdivions[i].push_back(point);
+		}
+		//goes to the next 
+		thetaB += incrementerB;
+	}
+
+	//loop to create the Sides
+	for (int i = 0; i < a_nSubdivisionsB; i++)
+	{
+		for (int j = 0; j < a_nSubdivisionsA; j++)
+		{
+			AddQuad(vertexSubdivions[i][j],
+				vertexSubdivions[i][(j + 1) % a_nSubdivisionsA],
+				vertexSubdivions[(i + 1) % a_nSubdivisionsB][j],
+				vertexSubdivions[(i + 1) % a_nSubdivisionsB][(j + 1) % a_nSubdivisionsA]);
+		}
+	}
 	// -------------------------------
 
 	// Adding information about color
@@ -386,8 +579,53 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	// -------------------------------
+	// I believe this shape isn't working because I don't think I have things plugged in quite right to the equation. The majority of the shape is roundish, 
+	//with the exception of the concave part on one side. Although the sides don't appear to be equal throughout
+
+	//holds all the vertices
+	std::vector<std::vector<vector3>> subdivisions;
+
+	//creates all needed subdivisions
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		std::vector<vector3> placeholder;
+		subdivisions.push_back(placeholder);
+	}
+	//placeholder for trig stuff
+	GLfloat thetaA = 0; //longitude
+	GLfloat thetaB = 0; //colatitude
+	//calculates the angle of the divisions
+	GLfloat incrementerA = 2 * PI / a_nSubdivisions;
+	GLfloat incrementerB = PI / a_nSubdivisions;
+
+	//loop through subdivisions
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//gives each division their points
+		for (int j = 0; j < a_nSubdivisions; j++)
+		{
+			//get point on the sphere - equation from wolfram mathworld
+			vector3 point = vector3(a_fRadius * cos(thetaA) * sin(thetaB), a_fRadius * sin(thetaA) * sin(thetaB), a_fRadius * cos(thetaB));
+			thetaA += incrementerA;
+			//adds to vector of vertices
+			subdivisions[i].push_back(point);
+		}
+		thetaB += incrementerB;
+	}
+
+	//loops through the vector of vectors
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		//grabs the points from each subdivison
+		for (int j = 0; j < a_nSubdivisions; j++)
+		{
+			AddQuad(subdivisions[i][(j + 1) % a_nSubdivisions],
+				subdivisions[i][j],
+				subdivisions[(i + 1) % a_nSubdivisions][(j + 1) % a_nSubdivisions],
+				subdivisions[(i + 1) % a_nSubdivisions][j]);
+		}
+	}
 	// -------------------------------
 
 	// Adding information about color
