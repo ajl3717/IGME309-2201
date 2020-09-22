@@ -59,7 +59,19 @@ void Application::Display(void)
 
 
 	//your code goes here
-	v3CurrentPos = vector3(0.0f, 0.0f, 0.0f);
+	float fTotalAnimationTime = 3.0f;
+	float fPercentage = fTimer / fTotalAnimationTime; //changes the percentage based on how long you want each step to take
+	static int i = 0; //incrementer
+
+	v3CurrentPos = glm::lerp(m_stopsList[i], m_stopsList[(i + 1) % m_stopsList.size()], fPercentage); //takes first stop in vector and next (making sure it loops back to the beginning when at the end of the vector)
+
+	//moves to the next stop when one finishes
+	if (fPercentage >= 1.0f)
+	{
+		fTimer = m_pSystem->GetDeltaTime(uClock); //resets timer
+		i++;
+		i %= m_stopsList.size(); //allows looping
+	}
 	//-------------------
 	
 
