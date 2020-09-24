@@ -535,14 +535,14 @@ void MyMesh::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSu
 		for (int j = 0; j < a_nSubdivisionsA; j++)
 		{
 			//parametric equations to get the points
-			vector3 point = vector3(((a_fInnerRadius + tubeRadius) + tubeRadius * cos(thetaB)) * cos(thetaA), ((a_fInnerRadius + tubeRadius) + tubeRadius * sin(thetaB)) * sin(thetaA), tubeRadius * sin(thetaB));
+			vector3 point = vector3(((a_fInnerRadius + tubeRadius) + tubeRadius * cos(thetaB)) * cos(thetaA), ((a_fInnerRadius + tubeRadius) + tubeRadius * cos(thetaB)) * sin(thetaA), tubeRadius * sin(thetaB));
 			//increments the angle of the "circle"
-			thetaA += incrementerA;
+			thetaB += incrementerB;
 			//add to the circle they belong to
 			vertexSubdivions[i].push_back(point);
 		}
 		//goes to the next 
-		thetaB += incrementerB;
+		thetaA += incrementerA;
 	}
 
 	//loop to create the Sides
