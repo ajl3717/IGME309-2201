@@ -369,6 +369,17 @@ void Application::CameraRotation(float a_fSpeed)
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
 	//Change the Yaw and the Pitch of the camera
+	//gets the three vectors which make up the local axis
+	vector3 forward = glm::normalize(m_pCamera->GetTarget() - m_pCamera->GetPosition());
+	vector3 up = glm::normalize(m_pCamera->GetAbove() - m_pCamera->GetPosition());
+	vector3 right = glm::normalize(glm::cross(up, forward));
+
+	//apply rotations according to the movement of the mouse and correct axis
+	quaternion qX = glm::angleAxis(-fAngleX, right);
+	quaternion qY = glm::angleAxis(-fAngleY, up);
+
+	//set the new target after applying rotations
+	m_pCamera->SetTarget(m_pCamera->GetTarget() * qX * qY);
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 //Keyboard
@@ -390,6 +401,15 @@ void Application::ProcessKeyboard(void)
 		m_pCamera->MoveForward(fSpeed);
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		m_pCamera->MoveForward(-fSpeed);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		m_pCamera->MoveSideways(-fSpeed);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		m_pCamera->MoveSideways(fSpeed);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		m_pCamera->MoveVertical(fSpeed);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		m_pCamera->MoveVertical(-fSpeed);
+
 #pragma endregion
 }
 //Joystick
@@ -437,4 +457,14 @@ void Application::ProcessJoystick(void)
 		m_qArcBall = quaternion(vector3(0.0f, glm::radians(m_pController[m_uActCont]->axis[SimplexAxis_POVX] / 20.0f), 0.0f)) * m_qArcBall;
 	}
 #pragma endregion
+}
+
+void Yaw(float degrees)
+{
+
+}
+
+void Pitch(float degrees)
+{
+
 }

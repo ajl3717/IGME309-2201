@@ -104,6 +104,7 @@ void Simplex::MyCamera::ResetCamera(void)
 	m_v3Target = vector3(0.0f, 0.0f, 0.0f); //What I'm looking at
 	m_v3Above = vector3(0.0f, 1.0f, 0.0f); //What is above the camera
 
+
 	m_bPerspective = true; //perspective view? False is Orthographic
 
 	m_fFOV = 45.0f; //Field of View
@@ -152,11 +153,35 @@ void Simplex::MyCamera::CalculateProjectionMatrix(void)
 
 void MyCamera::MoveForward(float a_fDistance)
 {
-	//The following is just an example and does not take in account the forward vector (AKA view vector)
-	m_v3Position += vector3(0.0f, 0.0f,-a_fDistance);
-	m_v3Target += vector3(0.0f, 0.0f, -a_fDistance);
-	m_v3Above += vector3(0.0f, 0.0f, -a_fDistance);
+	//forward vector = target - position
+	vector3 forward = glm::normalize(m_v3Target - m_v3Position);
+
+	//adds the amount to go forward to the position, target and above vectors
+	m_v3Position += forward * a_fDistance;
+	m_v3Target += forward * a_fDistance;
+	m_v3Above += forward * a_fDistance;
 }
 
-void MyCamera::MoveVertical(float a_fDistance){}//Needs to be defined
-void MyCamera::MoveSideways(float a_fDistance){}//Needs to be defined
+void MyCamera::MoveVertical(float a_fDistance)
+{
+	//up vector = above - position
+	vector3 up = glm::normalize(m_v3Above - m_v3Position);
+
+	//adds the amount to go up to the position, target and above vectors
+	m_v3Position += up * a_fDistance;
+	m_v3Target += up * a_fDistance;
+	m_v3Above += up * a_fDistance;
+}
+
+void MyCamera::MoveSideways(float a_fDistance)
+{
+	//right vector = up x forward
+	vector3 forward = glm::normalize(m_v3Target - m_v3Position);
+	vector3 up = glm::normalize(m_v3Above - m_v3Position);
+	vector3 right = glm::normalize(glm::cross(up, forward));
+
+	//adds the amount to go right to the position, target and above vectors
+	m_v3Position += right * -a_fDistance;
+	m_v3Target += right * -a_fDistance;
+	m_v3Above += right * -a_fDistance;
+}
